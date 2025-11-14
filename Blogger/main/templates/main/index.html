@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block extra_style %}
+{% endblock %}
+
+{% block title %}
+{% trans "Home Page" %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto mt-10">
+
+  {% if latest_post %}
+  <div class="max-w-lg mx-auto mt-14 glass dark:glass-dark shadow-2xl rounded-3xl p-10 border border-white/20 dark:border-white/10 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">
+
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+      {{ latest_post.title }}
+    </h1>
+
+    <p class="text-gray-800 dark:text-gray-300 mt-4 whitespace-pre-line leading-relaxed break-all">
+      {{ latest_post.content }}
+    </p>
+
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-6">
+      {{ latest_post.published_at }}
+    </p>
+  </div>
+
+  {% else %}
+  <p class="text-center text-gray-500 dark:text-gray-400 text-lg">No posts yet.</p>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,132 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredericka+the+Great&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans+Arabic:wght@100..800&display=swap" rel="stylesheet">
+  <!-- Google Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#243C21',
+            secondary: '#C0DFDB',
+            brown: '#3C2215',
+            gold: '#D2AC2B',
+            orange: '#E66033',
+            beige: '#F5EAD5',
+            lemon: '#BCB833',
+            brgandy: '#901C24',
+            mov: '#DEB1D3',
+            binky: '#E99692',
+            lightred: '#AB4E44',
+            lightblue: '#0690A7'
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="{% static 'js/actions.js' %}"></script>
+
+  <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+  {% block extra_style %}
+
+  {% endblock %}
+
+  <title>{% block title %} {% endblock %}</title>
+
+</head>
+
+<body class="flex flex-col min-h-screen {% if request.COOKIES.theme == 'dark' %}dark{% else %}light{% endif %}">
+  <header
+    class="fixed w-full z-50 bg-gradient-to-b from-brgandy/70 via-brgandy/50 to-brgandy/0 backdrop-blur-md shadow-md">
+    <div class="max-w-7xl mx-auto flex items-center justify-between p-4 md:p-6">
+
+       <!-- Mobile Hamburger -->
+<div class="md:hidden flex items-center order-last ">
+  <button id="mobile-menu-toggle"
+          class="text-white focus:outline-none">
+    <span class="material-icons w-9 h-9 bg-brgandy rounded-xl flex items-center justify-center hover:bg-lightred transition">
+      menu
+    </span>
+  </button>
+</div>
+
+      <!-- Logo -->
+      <a href="{% url 'main:home_view' %}"
+        class="font-bold text-4xl md:text-4xl tracking-wide text-brgandy hover:text-lightred dark:text-lightred dark:hover:text-beige transition-colors duration-300">
+        {% trans "Blogger" %}
+      </a>
+
+   
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-6 rtl:space-x-reverse text-white font-semibold">
+        <a href="{% url 'main:home_view' %}" class="hover:text-brgandy dark:hover:text-lightred transition-colors duration-300"> {% trans "Home" %} </a>
+        <a href="{% url 'main:add_post_view' %}" class="hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Add Post"%}</a>
+      </nav>
+
+      <!-- Right Controls -->
+      <div class="flex items-center space-x-3 rtl:space-x-reverse">
+        <!-- Language Switch -->
+        <a id="lang-toggle" class="flex-col justify-center items-center">
+          <span
+            class="material-icons w-9 h-9 flex items-center justify-center bg-brgandy rounded-xl transition hover:bg-lightred text-white">
+            language
+          </span>
+        </a>
+
+        <!-- Theme Switch -->
+        <button id="theme-toggle"
+          class="w-9 h-9 flex items-center justify-center text-white bg-brgandy hover:bg-lightred rounded-xl transition">
+          {% if request.COOKIES.theme == 'dark' %}
+          <span class="material-icons">dark_mode</span>
+          {% else %}
+          <span class="material-icons">wb_sunny</span>
+          {% endif %}
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu (Hidden by default) -->
+  <nav id="mobile-menu" class="hidden flex-row flex justify-center space-x-5 p-4 bg-gradient-to-b from-brgandy/70 via-brgandy/50 to-brgandy/0 backdrop-blur-md shadow-md md:hidden">
+    <a href="{% url 'main:home_view' %}" class="text-white hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Home" %}</a>
+    <a href="{% url 'main:add_post_view' %}" class="text-white hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Add Post" %}</a>
+  </nav>
+
+  </header>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-grow px-6 py-10">
+    <div class="max-w-3xl mx-auto space-y-6">
+    {% block content %}
+
+    {% endblock %}
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class=" bg-gradient-to-t from-brgandy/60 via-brgandy/40 to-brgandy/0 text-white p-6 mt-15 text-center ">
+    <p class="text-sm md:text-base">{% trans "© 2025 Blogger. All rights reserved." %}</p>
+  </footer>
+</body>
+
+</html>
