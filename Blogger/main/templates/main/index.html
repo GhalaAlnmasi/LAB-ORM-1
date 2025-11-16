@@ -1,36 +1,81 @@
 {% extends 'main/base.html' %}
 {% load i18n %}
-{% load static %}
 
-{% block extra_style %}
-{% endblock %}
-
-{% block title %}
-{% trans "Home Page" %}
-{% endblock %}
+{% block title %}Blogger{% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto mt-10">
+<div class="space-y-10">
 
-  {% if latest_post %}
-  <div class="max-w-lg mx-auto mt-14 glass dark:glass-dark shadow-2xl rounded-3xl p-10 border border-white/20 dark:border-white/10 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)] hover:-translate-y-1">
-
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-      {{ latest_post.title }}
+  <!-- Header Section -->
+  <section class="rounded-2xl p-10 bg-gradient-to-br from-brgandy via-lightred to-brgandy/80 shadow-xl text-white text-center animate-fade-in">
+    <h1 class="text-5xl font-extrabold tracking-wide mb-4 drop-shadow">
+      {% trans "Welcome to Blogger" %}
     </h1>
-
-    <p class="text-gray-800 dark:text-gray-300 mt-4 whitespace-pre-line leading-relaxed break-all">
-      {{ latest_post.content }}
+    <p class="text-lg opacity-90 max-w-2xl mx-auto">
+      {% trans "Where words take shape, and stories find their stage." %}
     </p>
+  </section>
 
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-6">
-      {{ latest_post.published_at }}
-    </p>
-  </div>
-
-  {% else %}
-  <p class="text-center text-gray-500 dark:text-gray-400 text-lg">No posts yet.</p>
+  <!-- Latest Post Highlight -->
+  {% if latest_post %}
+  <section class="bg-white dark:bg-brgandy/20 shadow-lg rounded-2xl overflow-hidden transform hover:scale-[1.01] transition duration-300 animate-slide-up">
+    <a href="{% url 'posts:post_detail' latest_post.pk %}">
+      {% if latest_post.image %}
+      <img src="{{ latest_post.image.url }}" class="w-full h-80 object-cover">
+      {% endif %}
+      <div class="p-6 space-y-3">
+        <h2 class="text-3xl font-bold text-brgandy dark:text-beige">
+          {{ latest_post.title }}
+        </h2>
+        <p class="text-gray-700 dark:text-beige/80 line-clamp-3">
+          {{ latest_post.content }}
+        </p>
+      </div>
+    </a>
+  </section>
+  
   {% endif %}
+
+  <!-- All Posts Section -->
+  <section class="space-y-6">
+    <h2 class="text-4xl font-extrabold text-brgandy dark:text-beige tracking-wide">
+      {% trans "Recent Posts" %}
+    </h2>
+
+     <!-- Posts Grid -->
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for post in posts %}
+      <div class="relative bg-white dark:bg-darkbg rounded-3xl shadow-xl p-5 border border-brgandy/20 hover:shadow-2xl transition-all duration-300 flex flex-col">
+
+        <!-- صورة البوست -->
+       {% if post.image %}
+    <img src="{{ post.image.url }}" class="w-full h-64 object-cover rounded-t-xl">
+{% else %}
+    <div class="w-full h-64 bg-gray-200 flex items-center justify-center rounded-t-xl text-gray-500">
+        No Image
+    </div>
+{% endif %}
+    
+        <!-- العنوان -->
+        <h2 class="text-2xl font-bold text-brgandy mb-2">{{ post.title }}</h2>
+    
+        <!-- وصف مختصر -->
+        <p class="text-gray-600 dark:text-gray-300 line-clamp-2 mb-4">{{ post.content }}</p>
+    
+        <!-- أزرار -->
+        <div class="flex justify-between items-center mt-auto pt-4">
+            <a href="{% url 'posts:post_detail' post.pk %}" 
+               class="px-4 py-2 bg-brgandy text-white rounded-xl hover:bg-lightred transition">
+               {% trans "Details" %} 
+            </a>
+        </div>
+    </div>
+   
+  {% empty %}
+    <p class="text-gray-700 dark:text-gray-200">{% trans "No posts found." %}</p>
+  {% endfor %}
+</div>
+  </section>
 
 </div>
 {% endblock %}

@@ -6,7 +6,8 @@ from posts.models import Post
 
 def home_view(request: HttpRequest):
   latest_post = Post.objects.last()
-  return render(request, "main/index.html", {"latest_post":latest_post})
+  posts = Post.objects.all().order_by("-id")
+  return render(request, "main/index.html", {"latest_post": latest_post, "posts": posts})
 
 
 def set_theme(request:HttpRequest, mode):

@@ -44,6 +44,14 @@
 
   <script src="{% static 'js/actions.js' %}"></script>
 
+  <style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    .animate-fadeIn { animation: fadeIn .25s ease-out; }
+    </style>
+
   <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
   {% block extra_style %}
@@ -80,11 +88,17 @@
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-6 rtl:space-x-reverse text-white font-semibold">
         <a href="{% url 'main:home_view' %}" class="hover:text-brgandy dark:hover:text-lightred transition-colors duration-300"> {% trans "Home" %} </a>
-        <a href="{% url 'posts:add_post_view' %}" class="hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Add Post"%}</a>
+        <a href="{% url 'posts:my_posts_view' %}" class="hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "My Posts"%}</a>
       </nav>
 
       <!-- Right Controls -->
       <div class="flex items-center space-x-3 rtl:space-x-reverse">
+        <!--Add Post Icon-->
+        <a href="{% url 'posts:add_post_view' %}" class="w-9 h-9 flex items-center justify-center text-white bg-brgandy hover:bg-lightred rounded-xl transition"><span
+          class="material-icons w-9 h-9 flex items-center justify-center bg-brgandy rounded-xl transition hover:bg-lightred text-white">
+          add_circle
+        </span></a>
+
         <!-- Language Switch -->
         <a id="lang-toggle" class="flex-col justify-center items-center">
           <span
@@ -108,14 +122,14 @@
     <!-- Mobile Menu (Hidden by default) -->
   <nav id="mobile-menu" class="hidden flex-row flex justify-center space-x-5 p-4 bg-gradient-to-b from-brgandy/70 via-brgandy/50 to-brgandy/0 backdrop-blur-md shadow-md md:hidden">
     <a href="{% url 'main:home_view' %}" class="text-white hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Home" %}</a>
-    <a href="{% url 'posts:add_post_view' %}" class="text-white hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "Add Post" %}</a>
+    <a href="{% url 'posts:my_posts_view' %}" class="text-white hover:text-brgandy dark:hover:text-lightred transition-colors duration-300">{% trans "My Post" %}</a>
   </nav>
 
   </header>
 
 
   <!-- MAIN CONTENT -->
-  <main class="flex-grow px-6 py-10">
+  <main class="flex-grow mt-16 px-6 py-10">
     <div class="max-w-3xl mx-auto space-y-6">
     {% block content %}
 
@@ -127,6 +141,17 @@
   <footer class=" bg-gradient-to-t from-brgandy/60 via-brgandy/40 to-brgandy/0 text-white p-6 mt-15 text-center ">
     <p class="text-sm md:text-base">{% trans "© 2025 Blogger. All rights reserved." %}</p>
   </footer>
+  <script>
+    function openDeleteModal(id) {
+        const modal = document.getElementById(`delete-modal-${id}`);
+        if (modal) modal.classList.remove("hidden");
+    }
+    
+    function closeDeleteModal(id) {
+        const modal = document.getElementById(`delete-modal-${id}`);
+        if (modal) modal.classList.add("hidden");
+    }
+    </script>
 </body>
 
 </html>
